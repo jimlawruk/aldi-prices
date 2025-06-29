@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { RawPricesComponent } from './raw-prices.component';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RawPricesComponent],
+  imports: [RouterOutlet, RawPricesComponent, RouterModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

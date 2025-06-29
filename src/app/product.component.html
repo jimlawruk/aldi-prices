@@ -1,0 +1,20 @@
+<h2 class="product-title">{{ productName }}</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (row of rows; track row) {
+      <tr>
+        <td>{{ row.Date }}</td>
+        <td>$ {{ row.Price }}</td>
+      </tr>
+    }
+  </tbody>
+</table>
+<div style="text-align: center; margin-top: 2rem;">
+  <a [routerLink]="['/']" class="back-link">Back to Home Page</a>
+</div>

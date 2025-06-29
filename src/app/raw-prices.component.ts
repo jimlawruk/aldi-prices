@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgFor } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { UtilitiesService } from './utilities.service';
 
 interface PriceRow {
   Filename: string;
@@ -11,12 +13,14 @@ interface PriceRow {
 @Component({
   selector: 'app-raw-prices',
   standalone: true,
-  imports: [NgFor],
+  imports: [NgFor, RouterModule],
   templateUrl: './raw-prices.component.html',
   styleUrls: ['./raw-prices.component.css']
 })
 export class RawPricesComponent implements OnInit {
   prices: PriceRow[] = [];
+
+  constructor(private utilities: UtilitiesService) {}
 
   async ngOnInit() {
     const response = await fetch('prices.csv');
@@ -44,5 +48,9 @@ export class RawPricesComponent implements OnInit {
       }
       return { Filename, Date, Product, Price: formattedPrice };
     }).filter(row => row.Filename && row.Date && row.Product && row.Price);
+  }
+
+  productToSlug(product: string): string {
+    return this.utilities.productToSlug(product);
   }
 }

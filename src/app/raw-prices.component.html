@@ -10,7 +10,11 @@
     @for (row of prices; track row) {
       <tr>
         <td>{{ row.Date }}</td>
-        <td>{{ row.Product }}</td>
+        <td>
+          <a [routerLink]="['/products', productToSlug(row.Product)]" class="product-link">
+            {{ row.Product }}
+          </a>
+        </td>
         <td>{{ row.Price }}</td>
       </tr>
     }

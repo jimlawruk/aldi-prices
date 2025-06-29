@@ -105,6 +105,27 @@ td:last-child {
   display: inline;
 }
 
+a, a:visited {
+  color: #001f4d;
+  text-decoration: underline;
+}
+a:hover, a:focus {
+  color: #003366;
+  text-decoration: underline;
+}
+.product-link, .back-link {
+  color: #001f4d;
+  text-decoration: underline;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: color 0.2s;
+}
+.product-link:hover, .product-link:focus,
+.back-link:hover, .back-link:focus {
+  color: #003366;
+}
+
 @media (max-width: 900px) {
   table {
     font-size: 1rem;

@@ -19,7 +19,11 @@
   <tbody>
     @for (stat of stats; track stat) {
       <tr>
-        <td>{{ stat.Product }}</td>
+        <td>
+          <a [routerLink]="['/products', productToSlug(stat.Product)]">
+            {{ stat.Product }}
+          </a>
+        </td>
         <td>{{ stat.pricesCollected }}</td>
         <td>{{ stat.earliestDate }}</td>
         <td>$ {{ stat.earliestPrice }}</td>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgFor } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { UtilitiesService } from './utilities.service';
 
 interface ProductStats {
   Product: string;
@@ -14,12 +16,14 @@ interface ProductStats {
 @Component({
   selector: 'app-product-prices',
   standalone: true,
-  imports: [NgFor],
+  imports: [NgFor, RouterModule],
   templateUrl: './product-prices.component.html',
   styleUrls: ['./product-prices.component.css']
 })
 export class ProductPricesComponent implements OnInit {
   stats: ProductStats[] = [];
+
+  constructor(private utilities: UtilitiesService) {}
 
   async ngOnInit() {
     const response = await fetch('prices.csv');
@@ -78,5 +82,9 @@ export class ProductPricesComponent implements OnInit {
         annualizedIncrease
       };
     });
+  }
+
+  productToSlug(product: string): string {
+    return this.utilities.productToSlug(product);
   }
 }
