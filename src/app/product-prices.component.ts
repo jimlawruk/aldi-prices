@@ -6,8 +6,8 @@ import { UtilitiesService } from './utilities.service';
 interface ProductStats {
   Product: string;
   pricesCollected: number;
-  earliestDate: string;
-  earliestPrice: string;
+  firstDate: string;
+  firstPrice: string;
   latestDate: string;
   latestPrice: string;
   annualizedIncrease: string;
@@ -54,17 +54,17 @@ export class ProductPricesComponent implements OnInit {
     return Object.entries(grouped).map(([product, entries]) => {
       const sorted = entries.sort((a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
       const pricesCollected = sorted.length;
-      const earliest = sorted[0];
+      const first = sorted[0];
       const latest = sorted[sorted.length - 1];
-      const earliestDate = earliest.Date;
-      const earliestPrice = earliest.Price;
+      const firstDate = first.Date;
+      const firstPrice = first.Price;
       const latestDate = latest.Date;
       const latestPrice = latest.Price;
       let annualizedIncrease = '';
       if (pricesCollected > 1) {
-        const years = (new Date(latestDate).getTime() - new Date(earliestDate).getTime()) / (365.25 * 24 * 60 * 60 * 1000);
+        const years = (new Date(latestDate).getTime() - new Date(firstDate).getTime()) / (365.25 * 24 * 60 * 60 * 1000);
         if (years > 0) {
-          const pct = (Math.pow(Number(latestPrice) / Number(earliestPrice), 1 / years) - 1) * 100;
+          const pct = (Math.pow(Number(latestPrice) / Number(firstPrice), 1 / years) - 1) * 100;
           annualizedIncrease = pct.toFixed(2) + '%';
         } else {
           annualizedIncrease = '0.00%';
@@ -75,8 +75,8 @@ export class ProductPricesComponent implements OnInit {
       return {
         Product: product,
         pricesCollected,
-        earliestDate,
-        earliestPrice,
+        firstDate,
+        firstPrice,
         latestDate,
         latestPrice,
         annualizedIncrease

@@ -47,13 +47,16 @@ td {
 /* Right justify price columns for both tables */
 th:nth-child(4),
 th:nth-child(6),
-th:nth-child(5),
 th:nth-child(7),
 td:nth-child(4),
 td:nth-child(6),
 td:nth-child(5),
 td:nth-child(7) {
   text-align: right;
+}
+/* Remove right-justify from Latest Date header */
+th:nth-child(5) {
+  text-align: left;
 }
 th {
   background: #001f4d;
@@ -167,6 +170,10 @@ a:hover, a:focus {
     display: inline;
   }
   .annual-increase-full {
+    display: none;
+  }
+  .annual-increase-header,
+  td:nth-child(7) {
     display: none;
   }
   table {

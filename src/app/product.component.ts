@@ -35,7 +35,12 @@ export class ProductComponent implements OnInit {
 
   private slugToName(slug: string): string {
     // Convert kebab-case to Title Case (e.g. spread-butter -> Spread Butter)
-    return slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    // Special handling for 2-milk to match 2% Milk
+    let name = slug.replace(/-/g, ' ');
+    if (name.startsWith('2 milk')) {
+      name = name.replace('2 milk', '2% Milk');
+    }
+    return name.replace(/\b\w/g, c => c.toUpperCase());
   }
 
   private parseCSV(csv: string, productName: string): ProductRow[] {
