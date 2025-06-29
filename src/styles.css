@@ -26,6 +26,7 @@ main.main {
 }
 table {
   width: 100%;
+  max-width: 800px;
   border-collapse: collapse;
   margin-top: 2rem;
   font-size: 1.15rem;
@@ -35,11 +36,24 @@ div > table {
   margin-left: auto;
   margin-right: auto;
 }
-th, td {
+th,
+td {
   border: 1px solid #001f4d; /* Navy color to match the title and header */
   padding: 0.5rem 0.75rem;
   text-align: left;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Right justify price columns for both tables */
+th:nth-child(4),
+th:nth-child(6),
+th:nth-child(5),
+th:nth-child(7),
+td:nth-child(4),
+td:nth-child(6),
+td:nth-child(5),
+td:nth-child(7) {
+  text-align: right;
 }
 th {
   background: #001f4d;
@@ -59,7 +73,7 @@ tbody tr:hover {
   text-transform: uppercase;
   padding: 0.8rem 2.2rem 1.0rem 2.2rem;
   border-radius: 0;
-  display: inline-block;
+  display: block;
   margin-bottom: 2.1rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -68,8 +82,89 @@ tbody tr:hover {
   outline: 5px solid yellow;
   outline-offset: 0px;
   text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 400px;
+  margin-top: 1.1rem;
 }
 th:last-child,
 td:last-child {
   text-align: right;
+}
+
+.prices-collected-short {
+  display: none;
+}
+.prices-collected-full {
+  display: inline;
+}
+.annual-increase-short {
+  display: none;
+}
+.annual-increase-full {
+  display: inline;
+}
+
+@media (max-width: 900px) {
+  table {
+    font-size: 1rem;
+    max-width: 100%;
+  }
+  .title-banner {
+    font-size: 2.2rem;
+    padding: 0.6rem 1.2rem 0.8rem 1.2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  table {
+    font-size: 0.95rem;
+    max-width: 100vw;
+  }
+  th, td {
+    padding: 0.35rem 0.4rem;
+  }
+  .title-banner {
+    font-size: 1.7rem;
+    padding: 0.4rem 0.5rem 0.6rem 0.5rem;
+    border-width: 5px;
+    outline-width: 2px;
+  }
+  main.main {
+    padding: 0.3rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .prices-collected-short {
+    display: inline;
+  }
+  .prices-collected-full {
+    display: none;
+  }
+  .annual-increase-short {
+    display: inline;
+  }
+  .annual-increase-full {
+    display: none;
+  }
+  table {
+    font-size: 0.78rem;
+  }
+  th, td {
+    padding: 0.18rem 0.18rem;
+  }
+  th {
+    font-size: 0.7rem;
+  }
+  .title-banner {
+    font-size: 1.7rem;
+    padding: 0.5rem 0.4rem 0.6rem 0.4rem;
+    border-width: 3px;
+    outline-width: 1px;
+    max-width: 200px;
+  }
+  main.main {
+    padding: 0.1rem;
+  }
 }

@@ -1,0 +1,32 @@
+<table>
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th class="prices-collected-header">
+        <span class="prices-collected-full">Prices Collected</span>
+        <span class="prices-collected-short">#</span>
+      </th>
+      <th>Earliest Date</th>
+      <th>Earliest Price</th>
+      <th>Latest Date</th>
+      <th>Latest Price</th>
+      <th class="annual-increase-header">
+        <span class="annual-increase-full">Annualized Increase %</span>
+        <span class="annual-increase-short">Annual Incrse %</span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (stat of stats; track stat) {
+      <tr>
+        <td>{{ stat.Product }}</td>
+        <td>{{ stat.pricesCollected }}</td>
+        <td>{{ stat.earliestDate }}</td>
+        <td>$ {{ stat.earliestPrice }}</td>
+        <td>{{ stat.latestDate }}</td>
+        <td>$ {{ stat.latestPrice }}</td>
+        <td>{{ stat.annualizedIncrease }}</td>
+      </tr>
+    }
+  </tbody>
+</table>
