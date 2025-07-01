@@ -22,6 +22,7 @@ interface ProductStats {
 })
 export class ProductPricesComponent implements OnInit {
   stats: ProductStats[] = [];
+  showSinglePrice = false;
 
   constructor(private utilities: UtilitiesService) {}
 
@@ -30,6 +31,10 @@ export class ProductPricesComponent implements OnInit {
     const csvText = await response.text();
     const rows = this.parseCSV(csvText);
     this.stats = this.calculateStats(rows);
+  }
+
+  get filteredStats() {
+    return this.showSinglePrice ? this.stats : this.stats.filter(s => s.pricesCollected > 1);
   }
 
   private parseCSV(csv: string) {
@@ -51,37 +56,40 @@ export class ProductPricesComponent implements OnInit {
       if (!grouped[row.Product]) grouped[row.Product] = [];
       grouped[row.Product].push(row);
     }
-    return Object.entries(grouped).map(([product, entries]) => {
-      const sorted = entries.sort((a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
-      const pricesCollected = sorted.length;
-      const first = sorted[0];
-      const latest = sorted[sorted.length - 1];
-      const firstDate = first.Date;
-      const firstPrice = first.Price;
-      const latestDate = latest.Date;
-      const latestPrice = latest.Price;
-      let annualizedIncrease = '';
-      if (pricesCollected > 1) {
-        const years = (new Date(latestDate).getTime() - new Date(firstDate).getTime()) / (365.25 * 24 * 60 * 60 * 1000);
-        if (years > 0) {
-          const pct = (Math.pow(Number(latestPrice) / Number(firstPrice), 1 / years) - 1) * 100;
-          annualizedIncrease = pct.toFixed(2) + '%';
+    // Alphabetically order products by name
+    return Object.entries(grouped)
+      .map(([product, entries]) => {
+        const sorted = entries.sort((a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
+        const pricesCollected = sorted.length;
+        const first = sorted[0];
+        const latest = sorted[sorted.length - 1];
+        const firstDate = first.Date;
+        const firstPrice = first.Price;
+        const latestDate = latest.Date;
+        const latestPrice = latest.Price;
+        let annualizedIncrease = '';
+        if (pricesCollected > 1) {
+          const years = (new Date(latestDate).getTime() - new Date(firstDate).getTime()) / (365.25 * 24 * 60 * 60 * 1000);
+          if (years > 0) {
+            const pct = (Math.pow(Number(latestPrice) / Number(firstPrice), 1 / years) - 1) * 100;
+            annualizedIncrease = pct.toFixed(2) + '%';
+          } else {
+            annualizedIncrease = '0.00%';
+          }
         } else {
           annualizedIncrease = '0.00%';
         }
-      } else {
-        annualizedIncrease = '0.00%';
-      }
-      return {
-        Product: product,
-        pricesCollected,
-        firstDate,
-        firstPrice,
-        latestDate,
-        latestPrice,
-        annualizedIncrease
-      };
-    });
+        return {
+          Product: product,
+          pricesCollected,
+          firstDate,
+          firstPrice,
+          latestDate,
+          latestPrice,
+          annualizedIncrease
+        };
+      })
+      .sort((a, b) => a.Product.localeCompare(b.Product));
   }
 
   productToSlug(product: string): string {

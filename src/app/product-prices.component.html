@@ -17,7 +17,7 @@
     </tr>
   </thead>
   <tbody>
-    @for (stat of stats; track stat) {
+    @for (stat of filteredStats; track stat) {
       <tr>
         <td>
           <a [routerLink]="['/products', productToSlug(stat.Product)]">
@@ -34,3 +34,9 @@
     }
   </tbody>
 </table>
+
+<div class="toggle-single-price-link">
+  <a href="#" (click)="$event.preventDefault(); showSinglePrice = !showSinglePrice">
+    {{ showSinglePrice ? 'Hide' : 'Show' }} products with only one price
+  </a>
+</div>
