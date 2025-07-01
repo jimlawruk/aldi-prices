@@ -1,59 +1,58 @@
-# AldiPrices
+# Aldi Prices
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.4.
+Aldi Prices is a modern Angular web application for tracking and visualizing product prices at Aldi stores over time. It loads price data from a CSV file and provides:
 
-## Development server
+- A responsive, styled table of all raw price entries
+- A summary table of products with price statistics and annualized increase
+- Product-specific pages with price history and a line chart (Chart.js)
+- Navigation between products and views
+- Mobile-friendly design and custom branding
 
-To start a local development server, run:
+## Features
+- Loads data from `public/prices.csv`
+- Responsive tables and navigation
+- Product price history chart with tooltips and labels
+- Custom favicon and branding
+- Utility service for slug generation
 
-```bash
-ng serve
+## Getting Started
+
+### Prerequisites
+- [Node.js](https://nodejs.org/) (v18+ recommended)
+- [npm](https://www.npmjs.com/) (comes with Node.js)
+
+### Install dependencies
+```sh
+npm install
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+### Run locally (development server)
+```sh
+npm start
 ```
+- Open [http://localhost:4200](http://localhost:4200) in your browser.
+- The app will reload if you make changes to the source files.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
+### Build for production
+```sh
+npm run build
 ```
+- The output will be in the `dist/` directory.
 
-## Building
+### Deploy
+1. Copy the contents of the `dist/` directory to your web server or static hosting provider (e.g., Netlify, Vercel, GitHub Pages, S3, etc).
+2. Ensure the `public/prices.csv` file is included and accessible.
+3. Set your server to serve `index.html` for all routes (for Angular routing).
 
-To build the project run:
+## Project Structure
+- `src/` - Angular source code
+- `public/` - Static assets (CSV, favicon, etc)
+- `prices.csv` - Product price data
 
-```bash
-ng build
-```
+## Customization
+- Update `public/prices.csv` to add or edit product prices.
+- Edit styles in `src/styles.css` for branding.
+- Update favicon in `public/favicon.svg`.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## License
+MIT
