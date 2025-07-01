@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { NgFor } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { RouterModule } from '@angular/router';
-import { loadChartJs } from './chartjs-loader';
-import { lastValueLabelPlugin } from './last-value-label.plugin';
 
 interface ProductRow {
   Date: string;
@@ -12,7 +11,7 @@ interface ProductRow {
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [RouterModule],
+  imports: [NgFor, RouterModule],
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css']
 })
@@ -30,15 +29,12 @@ export class ProductComponent implements OnInit {
         const response = await fetch('prices.csv');
         const csvText = await response.text();
         this.rows = this.parseCSV(csvText, this.productName);
-        await loadChartJs();
         setTimeout(() => this.renderChart(), 0);
       }
     });
   }
 
   private slugToName(slug: string): string {
-    // Convert kebab-case to Title Case (e.g. spread-butter -> Spread Butter)
-    // Special handling for 2-milk to match 2% Milk
     let name = slug.replace(/-/g, ' ');
     if (name.startsWith('2 milk')) {
       name = name.replace('2 milk', '2% Milk');
@@ -66,33 +62,17 @@ export class ProductComponent implements OnInit {
 
   private renderChart() {
     const chartEl = document.getElementById('priceChart') as HTMLCanvasElement;
+    // Use (window as any).Chart to avoid TS7015 error
     if (!chartEl || !(window as any).Chart) return;
-    // Set canvas width to match parent container for full responsiveness
-    const parent = chartEl.parentElement;
-    if (parent) {
-      chartEl.width = parent.clientWidth;
-    }
-    // Use ISO dates as labels for correct plugin logic
-    const isoLabels = this.rows.map(row => row.Date);
-    const displayLabels = this.rows.map(row => {
+    const labels = this.rows.map(row => {
       const d = new Date(row.Date);
       return d.toLocaleString('default', { month: 'short', year: '2-digit' });
     });
     const data = this.rows.map(row => Number(row.Price));
-    // Calculate min/max and expand the range to double
-    let min = Math.min(...data);
-    let max = Math.max(...data);
-    const center = (min + max) / 2;
-    const halfRange = (max - min) / 2;
-    min = Math.max(0, center - halfRange);
-    max = center + halfRange;
-    // Now double the range
-    min = Math.max(0, center - (max - min));
-    max = center + (max - min);
     new (window as any).Chart(chartEl, {
       type: 'line',
       data: {
-        labels: isoLabels, // Use ISO dates for plugin
+        labels,
         datasets: [{
           data,
           borderColor: '#1976d2',
@@ -111,26 +91,20 @@ export class ProductComponent implements OnInit {
             callbacks: {
               label: (ctx: any) => {
                 const idx = ctx.dataIndex;
-                const date = displayLabels[idx];
+                const date = this.rows[idx].Date;
                 const price = this.rows[idx].Price;
                 return `${date}: $${price}`;
               }
             }
-          },
-          lastValueLabel: {},
+          }
         },
         scales: {
           x: {
             title: { display: false },
-            ticks: {
-              color: '#222',
-              callback: (v: any, idx: number) => displayLabels[idx]
-            }
+            ticks: { color: '#222' }
           },
           y: {
             title: { display: false },
-            min,
-            max,
             ticks: { color: '#222', callback: (v: number) => `$${v.toFixed(2)}` }
           }
         },
@@ -140,8 +114,7 @@ export class ProductComponent implements OnInit {
         },
         responsive: true,
         maintainAspectRatio: false
-      },
-      plugins: [lastValueLabelPlugin]
+      }
     });
   }
 }
