@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { UtilitiesService } from './utilities.service';
 
@@ -16,13 +16,15 @@ interface ProductStats {
 @Component({
   selector: 'app-product-prices',
   standalone: true,
-  imports: [NgFor, RouterModule],
+  imports: [NgFor, NgIf, RouterModule],
   templateUrl: './product-prices.component.html',
   styleUrls: ['./product-prices.component.css']
 })
 export class ProductPricesComponent implements OnInit {
   stats: ProductStats[] = [];
   showSinglePrice = false;
+  sortColumn: keyof ProductStats = 'Product';
+  sortDirection: 'asc' | 'desc' = 'asc';
 
   constructor(private utilities: UtilitiesService) {}
 
@@ -34,7 +36,33 @@ export class ProductPricesComponent implements OnInit {
   }
 
   get filteredStats() {
-    return this.showSinglePrice ? this.stats : this.stats.filter(s => s.pricesCollected > 1);
+    const stats = this.showSinglePrice ? this.stats : this.stats.filter(s => s.pricesCollected > 1);
+    return [...stats].sort((a, b) => {
+      let aValue = a[this.sortColumn];
+      let bValue = b[this.sortColumn];
+      // For numeric columns, compare as numbers
+      if (['pricesCollected', 'firstPrice', 'latestPrice', 'annualizedIncrease'].includes(this.sortColumn)) {
+        // Remove $ and % for price/increase columns
+        aValue = typeof aValue === 'string' ? aValue.replace(/[$,% ]/g, '') : aValue;
+        bValue = typeof bValue === 'string' ? bValue.replace(/[$,% ]/g, '') : bValue;
+        aValue = Number(aValue);
+        bValue = Number(bValue);
+        if (isNaN(aValue)) aValue = 0;
+        if (isNaN(bValue)) bValue = 0;
+      }
+      if (aValue < bValue) return this.sortDirection === 'asc' ? -1 : 1;
+      if (aValue > bValue) return this.sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }
+
+  setSort(column: keyof ProductStats) {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
   }
 
   private parseCSV(csv: string) {

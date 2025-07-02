@@ -1,18 +1,35 @@
 <table>
   <thead>
     <tr>
-      <th>Product</th>
-      <th class="prices-collected-header">
+      <th (click)="setSort('Product')" style="cursor:pointer">
+        Product
+        <span *ngIf="sortColumn === 'Product'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+      </th>
+      <th class="prices-collected-header" (click)="setSort('pricesCollected')" style="cursor:pointer">
         <span class="prices-collected-full">Prices Collected</span>
         <span class="prices-collected-short">#</span>
+        <span *ngIf="sortColumn === 'pricesCollected'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
       </th>
-      <th>First Date</th>
-      <th>First Price</th>
-      <th>Latest Date</th>
-      <th>Latest Price</th>
-      <th class="annual-increase-header">
+      <th (click)="setSort('firstDate')" style="cursor:pointer">
+        First Date
+        <span *ngIf="sortColumn === 'firstDate'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+      </th>
+      <th (click)="setSort('firstPrice')" style="cursor:pointer">
+        First Price
+        <span *ngIf="sortColumn === 'firstPrice'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+      </th>
+      <th (click)="setSort('latestDate')" style="cursor:pointer">
+        Latest Date
+        <span *ngIf="sortColumn === 'latestDate'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+      </th>
+      <th (click)="setSort('latestPrice')" style="cursor:pointer">
+        Latest Price
+        <span *ngIf="sortColumn === 'latestPrice'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+      </th>
+      <th class="annual-increase-header" (click)="setSort('annualizedIncrease')" style="cursor:pointer">
         <span class="annual-increase-full">Annualized Increase %</span>
         <span class="annual-increase-short">Annual Incrse %</span>
+        <span *ngIf="sortColumn === 'annualizedIncrease'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
       </th>
     </tr>
   </thead>
