@@ -6,6 +6,7 @@ import { UtilitiesService } from './utilities.service';
 interface ProductStats {
   Product: string;
   pricesCollected: number;
+  averagePrice: string;
   firstDate: string;
   firstPrice: string;
   latestDate: string;
@@ -95,6 +96,8 @@ export class ProductPricesComponent implements OnInit {
         const firstPrice = first.Price;
         const latestDate = latest.Date;
         const latestPrice = latest.Price;
+        // Calculate average price
+        const avg = (sorted.reduce((sum, e) => sum + Number(e.Price), 0) / pricesCollected).toFixed(2);
         let annualizedIncrease = '';
         if (pricesCollected > 1) {
           const years = (new Date(latestDate).getTime() - new Date(firstDate).getTime()) / (365.25 * 24 * 60 * 60 * 1000);
@@ -110,6 +113,7 @@ export class ProductPricesComponent implements OnInit {
         return {
           Product: product,
           pricesCollected,
+          averagePrice: avg,
           firstDate,
           firstPrice,
           latestDate,

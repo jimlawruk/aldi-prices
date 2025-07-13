@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { loadChartJs } from './chartjs-loader';
 import { lastValueLabelPlugin } from './last-value-label.plugin';
+import { NgIf, NgFor } from '@angular/common';
 
 interface ProductRow {
   Date: string;
@@ -12,7 +13,7 @@ interface ProductRow {
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, NgIf, NgFor],
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css']
 })

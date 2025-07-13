@@ -10,13 +10,9 @@
         <span class="prices-collected-short">#</span>
         <span *ngIf="sortColumn === 'pricesCollected'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
       </th>
-      <th (click)="setSort('firstDate')" style="cursor:pointer">
-        First Date
-        <span *ngIf="sortColumn === 'firstDate'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
-      </th>
-      <th (click)="setSort('firstPrice')" style="cursor:pointer">
-        First Price
-        <span *ngIf="sortColumn === 'firstPrice'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+      <th (click)="setSort('averagePrice')" style="cursor:pointer">
+        Average Price
+        <span *ngIf="sortColumn === 'averagePrice'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
       </th>
       <th (click)="setSort('latestDate')" style="cursor:pointer">
         Latest Date
@@ -42,8 +38,7 @@
           </a>
         </td>
         <td>{{ stat.pricesCollected }}</td>
-        <td>{{ stat.firstDate }}</td>
-        <td>$ {{ stat.firstPrice }}</td>
+        <td>$ {{ stat.averagePrice }}</td>
         <td>{{ stat.latestDate }}</td>
         <td>$ {{ stat.latestPrice }}</td>
         <td>{{ stat.annualizedIncrease }}</td>
