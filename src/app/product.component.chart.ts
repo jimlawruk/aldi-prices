@@ -105,7 +105,9 @@ export class ProductComponent implements OnInit {
           },
           y: {
             title: { display: false },
-            ticks: { color: '#222', callback: (v: number) => `$${v.toFixed(2)}` }
+            ticks: { color: '#222', callback: (v: number) => `$${v.toFixed(2)}` },
+            min: 50,
+            max: 100
           }
         },
         interaction: {
