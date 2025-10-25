@@ -27,8 +27,8 @@ export class ProductPricesComponent implements OnInit {
   stats: ProductStats[] = [];
   showSinglePrice = false;
   showAllProducts = false;
-  sortColumn: keyof ProductStats = 'Product';
-  sortDirection: 'asc' | 'desc' = 'asc';
+  sortColumn: keyof ProductStats = 'pricesCollected';
+  sortDirection: 'asc' | 'desc' = 'desc';
   basketChart: any = null;
   basketChartData: { years: string[], sums: number[] } = { years: [], sums: [] };
 
