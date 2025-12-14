@@ -232,8 +232,8 @@ export class ProductPricesComponent implements OnInit {
           x: { title: { display: true, text: 'Year' } },
           y: {
             title: { display: true, text: 'Sum of Avg Prices ($)' },
-            min: 70,
-            max: 120
+            min: 60,
+            max: 100
           }
         }
       },
