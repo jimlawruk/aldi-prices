@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 
 interface ProductRow {
   Date: string;
+  Quarter: string;
   Price: string;
 }
 
@@ -43,6 +44,15 @@ export class ProductComponent implements OnInit {
   }
 
   private parseCSV(csv: string, productName: string): ProductRow[] {
+    const getQuarter = (dateStr: string): string => {
+      const date = new Date(dateStr);
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      if (month >= 1 && month <= 3) return `Q1 - ${year}`;
+      if (month >= 4 && month <= 6) return `Q2 - ${year}`;
+      if (month >= 7 && month <= 9) return `Q3 - ${year}`;
+      return `Q4 - ${year}`;
+    };
     const lines = csv.split(/\r?\n/).filter(line => line.trim() !== '' && !/^,+$/.test(line));
     const [header, ...rows] = lines;
     return rows.map(row => {
@@ -54,9 +64,10 @@ export class ProductComponent implements OnInit {
       if (Price && !isNaN(Number(Price))) {
         formattedPrice = Number(Price).toFixed(2);
       }
-      return { Date, Product, Price: formattedPrice };
+      return { Date, Quarter: getQuarter(Date), Product, Price: formattedPrice };
     })
     .filter(row => row.Product && row.Product.toLowerCase() === productName.toLowerCase())
+    .map(row => ({ Date: row.Date, Quarter: row.Quarter, Price: row.Price }))
     .sort((a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
   }
 

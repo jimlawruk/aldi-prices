@@ -6,13 +6,15 @@
   <thead>
     <tr>
       <th>Date</th>
+      <th>Quarter</th>
       <th>Price</th>
     </tr>
   </thead>
   <tbody>
     @for (row of rows; track row) {
-      <tr>
-        <td>{{ row.Date }}</td>
+      <tr [class.estimate-row]="row.Date && row.Date.trim().toLowerCase() === 'estimate'">
+        <td>{{ (row.Date || '').trim().toLowerCase() === 'estimate' ? 'Estimate' : row.Date }}</td>
+        <td>{{ row.Quarter }}</td>
         <td>$ {{ row.Price }}</td>
       </tr>
     }
