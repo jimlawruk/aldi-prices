@@ -30,17 +30,31 @@ export class ProductPricesComponent implements OnInit {
   sortColumn: keyof ProductStats = 'pricesCollected';
   sortDirection: 'asc' | 'desc' = 'desc';
   basketChart: any = null;
-  basketChartData: { years: string[], sums: number[] } = { years: [], sums: [] };
+  basketChartData: { quarters: string[], sums: number[] } = { quarters: [], sums: [] };
+  basketTableData: { quarters: string[], products: { name: string, prices: (number|null)[] }[], totals: number[] } = 
+    { quarters: [], products: [], totals: [] };
+
+  // New state for active view
+  activeView: 'basket' | 'products' = 'basket';
+
+  setActiveView(view: 'basket' | 'products') {
+    this.activeView = view;
+    if (view === 'basket') {
+      setTimeout(() => this.renderBasketChart(), 0);
+    }
+  }
 
   constructor(private utilities: UtilitiesService) {}
 
   async ngOnInit() {
+    this.activeView = 'basket'; // Always default to basket view on reload
     await this.utilities.initializeBasketOfGoods();
     const response = await fetch('prices.csv');
     const csvText = await response.text();
     const rows = this.parseCSV(csvText);
     this.stats = this.calculateStats(rows);
     this.prepareBasketChartData(rows);
+    this.prepareBasketTableData(rows);
     await loadChartJs();
     setTimeout(() => this.renderBasketChart(), 0);
   }
@@ -151,52 +165,94 @@ export class ProductPricesComponent implements OnInit {
   }
 
   prepareBasketChartData(rows: any[]) {
-    // Group prices by product and year
+    this.prepareBasketTableData(rows);
+    // Chart data is derived from table data
+    this.basketChartData = {
+      quarters: this.basketTableData.quarters,
+      sums: this.basketTableData.totals
+    };
+  }
+
+  prepareBasketTableData(rows: any[]) {
+    // Helper function to get quarter from date
+    const getQuarter = (dateStr: string): string => {
+      const date = new Date(dateStr);
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      if (month >= 1 && month <= 3) return `Q1-${year}`;
+      if (month >= 4 && month <= 6) return `Q2-${year}`;
+      if (month >= 7 && month <= 9) return `Q3-${year}`;
+      return `Q4-${year}`;
+    };
+
+    // Group prices by product and quarter
     const basket = this.utilities.basketOfGoods;
-    const productYearPrices: { [product: string]: { [year: string]: number[] } } = {};
+    const productQuarterPrices: { [product: string]: { [quarter: string]: number[] } } = {};
     rows.forEach(row => {
       if (!basket.includes(row.Product)) return;
-      const year = row.Date.slice(0, 4);
-      if (!productYearPrices[row.Product]) productYearPrices[row.Product] = {};
-      if (!productYearPrices[row.Product][year]) productYearPrices[row.Product][year] = [];
-      productYearPrices[row.Product][year].push(Number(row.Price));
+      const quarter = getQuarter(row.Date);
+      if (!productQuarterPrices[row.Product]) productQuarterPrices[row.Product] = {};
+      if (!productQuarterPrices[row.Product][quarter]) productQuarterPrices[row.Product][quarter] = [];
+      productQuarterPrices[row.Product][quarter].push(Number(row.Price));
     });
-    // Get all years in data
-    const allYears = Array.from(new Set(rows.map(r => r.Date.slice(0, 4)))).sort();
-    // For each year, sum average price for each product in basket
-    const yearSums: { [year: string]: number } = {};
+
+    // Get all quarters and sort
+    const allQuarters = Array.from(new Set(rows.map(r => getQuarter(r.Date)))).sort((a, b) => {
+      const [qA, yA] = a.split('-');
+      const [qB, yB] = b.split('-');
+      if (yA !== yB) return parseInt(yA) - parseInt(yB);
+      return parseInt(qA.slice(1)) - parseInt(qB.slice(1));
+    });
+
+    // Build table data
+    const products: { name: string, prices: (number|null)[] }[] = [];
+    const totals: number[] = new Array(allQuarters.length).fill(0);
+
     basket.forEach(product => {
+      const prices: (number|null)[] = [];
       let lastAvg: number|null = null;
-      allYears.forEach(year => {
+
+      allQuarters.forEach((quarter, qIdx) => {
         let avg: number|null = null;
-        if (productYearPrices[product][year]) {
-          const prices = productYearPrices[product][year];
-          avg = prices.reduce((a, b) => a + b, 0) / prices.length;
+        if (productQuarterPrices[product] && productQuarterPrices[product][quarter]) {
+          const priceList = productQuarterPrices[product][quarter];
+          avg = priceList.reduce((a, b) => a + b, 0) / priceList.length;
           lastAvg = avg;
         } else if (lastAvg !== null) {
           avg = lastAvg;
         } else {
-          // Look ahead for next available year
-          const nextYear = allYears.find(y => y > year && productYearPrices[product][y]);
-          if (nextYear) {
-            const prices = productYearPrices[product][nextYear];
-            avg = prices.reduce((a, b) => a + b, 0) / prices.length;
+          // Look ahead for next available quarter
+          const nextQuarterIdx = allQuarters.findIndex((q, idx) => {
+            if (idx <= qIdx) return false;
+            return productQuarterPrices[product] && productQuarterPrices[product][q] && productQuarterPrices[product][q].length > 0;
+          });
+          if (nextQuarterIdx !== -1) {
+            const nextQuarter = allQuarters[nextQuarterIdx];
+            const priceList = productQuarterPrices[product][nextQuarter];
+            avg = priceList.reduce((a, b) => a + b, 0) / priceList.length;
             lastAvg = avg;
           }
         }
-        if (!yearSums[year]) yearSums[year] = 0;
+
+        prices.push(avg);
+        
+        // Add to totals (accounting for Bananas lb multiplier)
         if (avg !== null) {
           if (product === 'Bananas lb') {
-            yearSums[year] += avg * 5;
+            totals[qIdx] += avg * 5;
           } else {
-            yearSums[year] += avg;
+            totals[qIdx] += avg;
           }
         }
       });
+
+      products.push({ name: product, prices });
     });
-    this.basketChartData = {
-      years: allYears,
-      sums: allYears.map(y => Number(yearSums[y]?.toFixed(2) || 0))
+
+    this.basketTableData = {
+      quarters: allQuarters,
+      products,
+      totals: totals.map(t => Number(t.toFixed(2)))
     };
   }
 
@@ -210,7 +266,7 @@ export class ProductPricesComponent implements OnInit {
     this.basketChart = new (window as any).Chart(el, {
       type: 'line',
       data: {
-        labels: this.basketChartData.years,
+        labels: this.basketChartData.quarters,
         datasets: [{
           label: 'Basket of Goods Price Sum',
           data: this.basketChartData.sums,
@@ -229,7 +285,7 @@ export class ProductPricesComponent implements OnInit {
           tooltip: { enabled: true }
         },
         scales: {
-          x: { title: { display: true, text: 'Year' } },
+          x: { title: { display: true, text: 'Quarter' } },
           y: {
             title: { display: true, text: 'Sum of Avg Prices ($)' },
             min: 60,

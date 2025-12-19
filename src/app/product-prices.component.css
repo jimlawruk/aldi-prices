@@ -1,1 +1,60 @@
-/* Styles for ProductPricesComponent - now consolidated in styles.css */
+.compact-table {
+	font-size: 1.04rem;
+	font-weight: 400;
+	border-collapse: collapse;
+	color: #263238;
+	background: #fcfcfd;
+}
+
+.compact-table th, .compact-table td {
+	padding: 0.22rem 0.45rem;
+	font-weight: 400;
+	border-bottom: 1px solid #b0b3b8;
+}
+
+.compact-table th {
+	font-weight: 600;
+	background: #f2f6fa;
+	color: #444;
+}
+
+.compact-table tbody tr:last-child td {
+	border-bottom: 2px solid #b0b3b8;
+	font-weight: 700;
+}
+
+.compact-table tr:nth-child(even) td {
+	background: #f7fafd;
+}
+
+.top-buttons-container {
+	display: flex;
+	justify-content: center;
+	gap: 2rem;
+	margin: 2rem auto 1.5rem auto;
+}
+
+.top-large-btn {
+	font-size: 1.5rem;
+	padding: 1rem 2.5rem;
+	border: 3px solid #1976d2;
+	border-radius: 12px;
+	background: #fff;
+	color: #1976d2;
+	font-weight: bold;
+	cursor: pointer;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+	transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.top-large-btn.active-btn {
+	background: #e3f2fd;
+	border-color: #1565c0;
+	color: #1565c0;
+}
+
+.top-large-btn:hover {
+	background: #1976d2;
+	color: #fff;
+	border-color: #1565c0;
+}
