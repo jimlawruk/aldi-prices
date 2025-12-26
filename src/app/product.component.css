@@ -16,6 +16,24 @@
 
 .back-link {
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  color: #1976d2;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border: 2px solid #1976d2;
+  border-radius: 8px;
+  display: inline-block;
+  transition: background 0.2s, color 0.2s;
+}
+
+.back-link:hover {
+  background: #1976d2;
+  color: white;
+}
+
+.back-link-container {
+  text-align: center;
+  margin-top: 2rem;
 }
 
 .chart-container {

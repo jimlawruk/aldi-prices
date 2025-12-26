@@ -27,6 +27,7 @@ export class ProductPricesComponent implements OnInit {
   stats: ProductStats[] = [];
   showSinglePrice = false;
   showAllProducts = false;
+  minPricesThreshold = 6; // Minimum number of prices required to display a product
   sortColumn: keyof ProductStats = 'pricesCollected';
   sortDirection: 'asc' | 'desc' = 'desc';
   basketChart: any = null;
@@ -61,7 +62,8 @@ export class ProductPricesComponent implements OnInit {
 
   get filteredStats() {
     if (this.showAllProducts) {
-      return [...this.stats].sort((a, b) => {
+      return [...this.stats]
+        .sort((a, b) => {
         let aValue = a[this.sortColumn];
         let bValue = b[this.sortColumn];
         if (['pricesCollected', 'firstPrice', 'latestPrice', 'annualizedIncrease', 'averagePrice'].includes(this.sortColumn)) {
@@ -79,7 +81,9 @@ export class ProductPricesComponent implements OnInit {
     } else {
       // Only show products in basketOfGoods
       const basket = this.utilities.basketOfGoods;
-      return [...this.stats].filter(s => basket.includes(s.Product)).sort((a, b) => {
+      return [...this.stats]
+        .filter(s => basket.includes(s.Product) && s.pricesCollected >= this.minPricesThreshold)
+        .sort((a, b) => {
         let aValue = a[this.sortColumn];
         let bValue = b[this.sortColumn];
         if (['pricesCollected', 'firstPrice', 'latestPrice', 'annualizedIncrease', 'averagePrice'].includes(this.sortColumn)) {

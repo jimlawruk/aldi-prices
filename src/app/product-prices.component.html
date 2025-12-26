@@ -21,23 +21,23 @@
 </div>
 
 <div *ngIf="activeView === 'basket'">
-  <p style="text-align:center;max-width:800px;margin:0 auto 2rem auto;color:#666;font-size:1.25rem;">
+  <p class="description-text">
     This chart below tracks the total cost of a basket of goods based on the available prices of goods collected.
   </p>
-  <div style="width:100%;max-width:800px;margin:2rem auto 1rem auto;">
-    <canvas id="basketChart" style="width:100%;height:320px;"></canvas>
+  <div class="chart-container-wrapper">
+    <canvas id="basketChart"></canvas>
   </div>
 
-  <table class="compact-table" style="margin-top:2rem;">
+  <table class="compact-table basket-table">
     <thead>
       <tr>
-        <th style="text-align:left;">Product</th>
+        <th>Product</th>
         <th *ngFor="let quarter of basketTableData.quarters">{{ quarter }}</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let product of basketTableData.products">
-        <td style="text-align:left;">
+        <td>
           <a [routerLink]="['/products', productToSlug(product.name)]">
             {{ product.name }}
           </a>
@@ -47,8 +47,8 @@
           {{ price !== null ? ('$' + price.toFixed(2)) : '-' }}
         </td>
       </tr>
-      <tr style="font-weight:bold;border-top:2px solid #333;">
-        <td style="text-align:left;">Total</td>
+      <tr>
+        <td>Total</td>
         <td *ngFor="let total of basketTableData.totals">
           ${{ total.toFixed(2) }}
         </td>
@@ -58,31 +58,35 @@
 </div>
 
 <div *ngIf="activeView === 'products'">
+  <p class="description-text">
+    <span *ngIf="!showAllProducts">This table displays the products with at least {{ minPricesThreshold }} prices collected.</span>
+    <span *ngIf="showAllProducts">This table is displaying all the products with a price collected.</span>
+  </p>
   <table class="compact-table">
     <thead>
       <tr>
-        <th (click)="setSort('Product')" style="cursor:pointer">
+        <th class="sortable" (click)="setSort('Product')">
           Product
           <span *ngIf="sortColumn === 'Product'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
         </th>
-        <th class="prices-collected-header" (click)="setSort('pricesCollected')" style="cursor:pointer">
+        <th class="prices-collected-header sortable" (click)="setSort('pricesCollected')">
           <span class="prices-collected-full">Prices Collected</span>
           <span class="prices-collected-short">#</span>
           <span *ngIf="sortColumn === 'pricesCollected'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
         </th>
-        <th (click)="setSort('averagePrice')" style="cursor:pointer">
+        <th class="sortable" (click)="setSort('averagePrice')">
           Average Price
           <span *ngIf="sortColumn === 'averagePrice'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
         </th>
-        <th (click)="setSort('latestDate')" style="cursor:pointer">
+        <th class="sortable" (click)="setSort('latestDate')">
           Latest Date
           <span *ngIf="sortColumn === 'latestDate'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
         </th>
-        <th (click)="setSort('latestPrice')" style="cursor:pointer">
+        <th class="sortable" (click)="setSort('latestPrice')">
           Latest Price
           <span *ngIf="sortColumn === 'latestPrice'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
         </th>
-        <th class="annual-increase-header" (click)="setSort('annualizedIncrease')" style="cursor:pointer">
+        <th class="annual-increase-header sortable" (click)="setSort('annualizedIncrease')">
           <span class="annual-increase-full">Annualized Increase %</span>
           <span class="annual-increase-short">Annual Incrse %</span>
           <span *ngIf="sortColumn === 'annualizedIncrease'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
