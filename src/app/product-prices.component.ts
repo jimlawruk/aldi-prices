@@ -1,8 +1,3 @@
-  // ...existing code...
-
-    // ...existing code...
-
-    // ...existing code...
 import { Component, OnInit } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -124,6 +119,24 @@ export class ProductPricesComponent implements OnInit {
     }).filter(row => row.Filename && row.Date && row.Product && row.Price);
   }
 
+  // Robust date parser for MM/DD/YYYY and YYYY-MM-DD formats
+  private parseDate(dateStr: string): Date {
+    if (!dateStr) return new Date('');
+    // If ISO format, parse directly
+    if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(dateStr)) {
+      return new Date(dateStr);
+    }
+    // If MM/DD/YYYY format
+    const mmddyyyy = /^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/;
+    const match = dateStr.match(mmddyyyy);
+    if (match) {
+      const [, mm, dd, yyyy] = match;
+      return new Date(Number(yyyy), Number(mm) - 1, Number(dd));
+    }
+    // Fallback to Date constructor
+    return new Date(dateStr);
+  }
+
   private calculateStats(rows: any[]): ProductStats[] {
     const grouped: { [product: string]: any[] } = {};
     for (const row of rows) {
@@ -133,7 +146,7 @@ export class ProductPricesComponent implements OnInit {
     // Alphabetically order products by name
     return Object.entries(grouped)
       .map(([product, entries]) => {
-        const sorted = entries.sort((a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
+        const sorted = entries.sort((a, b) => this.parseDate(a.Date).getTime() - this.parseDate(b.Date).getTime());
         const pricesCollected = sorted.length;
         const first = sorted[0];
         const latest = sorted[sorted.length - 1];
@@ -145,7 +158,7 @@ export class ProductPricesComponent implements OnInit {
         const avg = (sorted.reduce((sum, e) => sum + Number(e.Price), 0) / pricesCollected).toFixed(2);
         let annualizedIncrease = '';
         if (pricesCollected > 1) {
-          const years = (new Date(latestDate).getTime() - new Date(firstDate).getTime()) / (365.25 * 24 * 60 * 60 * 1000);
+          const years = (this.parseDate(latestDate).getTime() - this.parseDate(firstDate).getTime()) / (365.25 * 24 * 60 * 60 * 1000);
           if (years > 0) {
             const pct = (Math.pow(Number(latestPrice) / Number(firstPrice), 1 / years) - 1) * 100;
             annualizedIncrease = pct.toFixed(2) + '%';
@@ -181,7 +194,7 @@ export class ProductPricesComponent implements OnInit {
   prepareBasketTableData(rows: any[]) {
     // Helper function to get quarter from date
     const getQuarter = (dateStr: string): string => {
-      const date = new Date(dateStr);
+      const date = this.parseDate(dateStr);
       const month = date.getMonth() + 1;
       const year = date.getFullYear();
       if (month >= 1 && month <= 3) return `Q1-${year}`;

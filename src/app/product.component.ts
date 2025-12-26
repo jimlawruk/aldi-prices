@@ -52,19 +52,26 @@ export class ProductComponent implements OnInit {
         if (productName.toLowerCase().includes('big dipper chips')) {
           console.log('--- DEBUG: Big Dipper Chips parseCSV ---');
         }
-    const getQuarter = (dateStr: string): string => {
-      // Accepts either a date string or a Date object
-      let date: Date;
-      if (typeof dateStr === 'string') {
-        // Only use the date part if ISO string
-        if (dateStr.length > 10 && dateStr.includes('T')) {
-          date = new Date(dateStr.substring(0, 10));
-        } else {
-          date = new Date(dateStr);
-        }
-      } else {
-        date = dateStr;
+    // Robust date parser for MM/DD/YYYY and YYYY-MM-DD
+    const parseDate = (dateStr: string): Date => {
+      if (!dateStr) return new Date('');
+      // If ISO format, parse directly
+      if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(dateStr)) {
+        return new Date(dateStr);
       }
+      // If MM/DD/YYYY format
+      const mmddyyyy = /^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/;
+      const match = dateStr.match(mmddyyyy);
+      if (match) {
+        const [, mm, dd, yyyy] = match;
+        return new Date(Number(yyyy), Number(mm) - 1, Number(dd));
+      }
+      // Fallback to Date constructor
+      return new Date(dateStr);
+    };
+
+    const getQuarter = (dateStr: string): string => {
+      let date: Date = parseDate(dateStr);
       const month = date.getMonth() + 1;
       const year = date.getFullYear();
       if (month >= 1 && month <= 3) return `Q1 - ${year}`;
@@ -89,7 +96,7 @@ export class ProductComponent implements OnInit {
       return { Date, Quarter: getQuarter(Date), Product, Price: formattedPrice };
     })
     .filter(row => row.Product && row.Product.toLowerCase() === productName.toLowerCase())
-    .sort((a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
+    .sort((a, b) => parseDate(a.Date).getTime() - parseDate(b.Date).getTime());
     if (productName.toLowerCase().includes('big dipper chips')) {
       console.log('actualRows:', actualRows);
     }
@@ -110,8 +117,8 @@ export class ProductComponent implements OnInit {
     }
 
     // Get all quarters between first and last
-    const firstDate = new Date(actualRows[0].Date);
-    const lastDate = new Date(actualRows[actualRows.length - 1].Date);
+    const firstDate = parseDate(actualRows[0].Date);
+    const lastDate = parseDate(actualRows[actualRows.length - 1].Date);
     const allQuarters: string[] = [];
     
     let currentDate = new Date(firstDate.getFullYear(), Math.floor(firstDate.getMonth() / 3) * 3, 1);
@@ -122,6 +129,11 @@ export class ProductComponent implements OnInit {
       const q = getQuarter(dateStr);
       allQuarters.push(q);
       currentDate.setMonth(currentDate.getMonth() + 3);
+    }
+    // Ensure we include the quarter containing the last date
+    const lastQuarter = getQuarter(actualRows[actualRows.length - 1].Date);
+    if (!allQuarters.includes(lastQuarter)) {
+      allQuarters.push(lastQuarter);
     }
     if (productName.toLowerCase().includes('big dipper chips')) {
       console.log('allQuarters:', allQuarters);
