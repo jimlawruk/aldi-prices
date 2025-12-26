@@ -1,3 +1,8 @@
+  // ...existing code...
+
+    // ...existing code...
+
+    // ...existing code...
 import { Component, OnInit } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -31,7 +36,7 @@ export class ProductPricesComponent implements OnInit {
   sortDirection: 'asc' | 'desc' = 'desc';
   basketChart: any = null;
   basketChartData: { quarters: string[], sums: number[] } = { quarters: [], sums: [] };
-  basketTableData: { quarters: string[], products: { name: string, prices: (number|null)[] }[], totals: number[] } = 
+  basketTableData: { quarters: string[], products: { name: string, prices: (number|null)[], estimates: boolean[] }[], totals: number[] } = 
     { quarters: [], products: [], totals: [] };
 
   // New state for active view
@@ -205,38 +210,55 @@ export class ProductPricesComponent implements OnInit {
     });
 
     // Build table data
-    const products: { name: string, prices: (number|null)[] }[] = [];
+    const products: { name: string, prices: (number|null)[], estimates: boolean[] }[] = [];
     const totals: number[] = new Array(allQuarters.length).fill(0);
 
     basket.forEach(product => {
-      const prices: (number|null)[] = [];
-      let lastAvg: number|null = null;
-
-      allQuarters.forEach((quarter, qIdx) => {
-        let avg: number|null = null;
-        if (productQuarterPrices[product] && productQuarterPrices[product][quarter]) {
-          const priceList = productQuarterPrices[product][quarter];
-          avg = priceList.reduce((a, b) => a + b, 0) / priceList.length;
-          lastAvg = avg;
-        } else if (lastAvg !== null) {
-          avg = lastAvg;
-        } else {
-          // Look ahead for next available quarter
-          const nextQuarterIdx = allQuarters.findIndex((q, idx) => {
-            if (idx <= qIdx) return false;
-            return productQuarterPrices[product] && productQuarterPrices[product][q] && productQuarterPrices[product][q].length > 0;
-          });
-          if (nextQuarterIdx !== -1) {
-            const nextQuarter = allQuarters[nextQuarterIdx];
-            const priceList = productQuarterPrices[product][nextQuarter];
-            avg = priceList.reduce((a, b) => a + b, 0) / priceList.length;
-            lastAvg = avg;
-          }
+      // Build array of actual averages for each quarter
+      const actualAvgs: (number|null)[] = allQuarters.map(q => {
+        if (productQuarterPrices[product] && productQuarterPrices[product][q]) {
+          const priceList = productQuarterPrices[product][q];
+          return priceList.reduce((a, b) => a + b, 0) / priceList.length;
         }
+        return null;
+      });
 
-        prices.push(avg);
-        
-        // Add to totals (accounting for Bananas lb multiplier)
+      // Interpolate missing values linearly and track estimates
+      const prices: (number|null)[] = [...actualAvgs];
+      const estimates: boolean[] = prices.map(v => v === null ? false : true); // will update below
+      let idx = 0;
+      while (idx < prices.length) {
+        if (prices[idx] !== null) {
+          estimates[idx] = false; // actual value
+          idx++;
+          continue;
+        }
+        // Start of missing range
+        let startIdx = idx - 1;
+        let endIdx = idx;
+        while (endIdx < prices.length && prices[endIdx] === null) {
+          endIdx++;
+        }
+        let prevPrice: number|null = startIdx >= 0 ? prices[startIdx] : null;
+        let nextPrice: number|null = endIdx < prices.length ? prices[endIdx] : null;
+        const numMissing = endIdx - idx;
+        for (let fillIdx = 0; fillIdx < numMissing; fillIdx++) {
+          let estimate: number|null = null;
+          if (prevPrice !== null && nextPrice !== null) {
+            estimate = prevPrice + ((nextPrice - prevPrice) * (fillIdx + 1)) / (numMissing + 1);
+          } else if (prevPrice !== null) {
+            estimate = prevPrice;
+          } else if (nextPrice !== null) {
+            estimate = nextPrice;
+          }
+          prices[idx + fillIdx] = estimate;
+          estimates[idx + fillIdx] = true; // mark as estimate
+        }
+        idx = endIdx;
+      }
+
+      // Add to totals (accounting for Bananas lb multiplier)
+      prices.forEach((avg, qIdx) => {
         if (avg !== null) {
           if (product === 'Bananas lb') {
             totals[qIdx] += avg * 5;
@@ -246,7 +268,7 @@ export class ProductPricesComponent implements OnInit {
         }
       });
 
-      products.push({ name: product, prices });
+      products.push({ name: product, prices, estimates });
     });
 
     this.basketTableData = {
@@ -299,5 +321,12 @@ export class ProductPricesComponent implements OnInit {
 
   productToSlug(product: string): string {
     return this.utilities.productToSlug(product);
+  }
+
+  // Helper to detect if a cell is an estimate (interpolated)
+  public isEstimateCell(productName: string, quarterIdx: number): boolean {
+    const product = this.basketTableData.products.find(p => p.name === productName);
+    if (!product || !product.estimates) return false;
+    return !!product.estimates[quarterIdx];
   }
 }
