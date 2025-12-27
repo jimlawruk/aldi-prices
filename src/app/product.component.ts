@@ -211,21 +211,42 @@ export class ProductComponent implements OnInit {
   private renderChart() {
     const chartEl = document.getElementById('priceChart') as HTMLCanvasElement;
     if (!chartEl || !(window as any).Chart) return;
-    // Set canvas width to match parent container for full responsiveness
-    const parent = chartEl.parentElement;
-    if (parent) {
-      chartEl.width = parent.clientWidth;
-    }
-    // Use ISO dates as labels for correct plugin logic
-    const isoLabels = this.rows.map(row => row.Date);
-    const displayLabels = this.rows.map(row => {
-      const d = new Date(row.Date);
-      return d.toLocaleString('default', { month: 'short', year: '2-digit' });
+    // Filter out estimated prices - only plot actual prices
+    const actualRows = this.rows.filter(row => row.Date && row.Date.trim().toLowerCase() !== 'estimate');
+    if (actualRows.length === 0) return;
+    
+    // Parse dates and create dataset with actual date-based x values
+    const chartData = actualRows.map(row => {
+      const dateStr = row.Date;
+      const dateParts = dateStr.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/) || dateStr.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+      let date: Date;
+      
+      if (dateParts && dateStr.includes('/')) {
+        // MM/DD/YYYY format
+        date = new Date(parseInt(dateParts[3]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]));
+      } else if (dateParts) {
+        // YYYY-MM-DD format
+        date = new Date(parseInt(dateParts[1]), parseInt(dateParts[2]) - 1, parseInt(dateParts[3]));
+      } else {
+        date = new Date(dateStr);
+      }
+      
+      return {
+        x: date.getTime(),
+        y: Number(row.Price)
+      };
     });
-    const data = this.rows.map(row => Number(row.Price));
-    // Calculate min/max and expand the range to double
-    let min = Math.min(...data);
-    let max = Math.max(...data);
+    
+    const prices = chartData.map(d => d.y);
+    const minDate = Math.min(...chartData.map(d => d.x));
+    const maxDate = Math.max(...chartData.map(d => d.x));
+    
+    // Get last price for label
+    const lastPrice = chartData.length > 0 ? chartData[chartData.length - 1].y : 0;
+    
+    // Calculate min/max for y-axis and expand the range to double
+    let min = Math.min(...prices);
+    let max = Math.max(...prices);
     const center = (min + max) / 2;
     const halfRange = (max - min) / 2;
     min = Math.max(0, center - halfRange);
@@ -233,18 +254,19 @@ export class ProductComponent implements OnInit {
     // Now double the range
     min = Math.max(0, center - (max - min));
     max = center + (max - min);
+    
     new (window as any).Chart(chartEl, {
-      type: 'line',
+      type: 'scatter',
       data: {
-        labels: isoLabels, // Use ISO dates for plugin
         datasets: [{
-          data,
+          data: chartData,
           borderColor: '#1976d2',
           backgroundColor: '#1976d2',
           pointRadius: 5,
           pointHoverRadius: 7,
           fill: false,
-          tension: 0.2,
+          tension: 0.4,
+          showLine: true
         }]
       },
       options: {
@@ -254,10 +276,11 @@ export class ProductComponent implements OnInit {
           tooltip: {
             callbacks: {
               label: (ctx: any) => {
-                const idx = ctx.dataIndex;
-                const date = displayLabels[idx];
-                const price = this.rows[idx].Price;
-                return `${date}: $${price}`;
+                const price = ctx.parsed.y;
+                const dateMs = ctx.parsed.x;
+                const d = new Date(dateMs);
+                const dateStr = d.toLocaleString('default', { month: 'short', day: 'numeric', year: 'numeric' });
+                return `${dateStr}: $${price.toFixed(2)}`;
               }
             }
           },
@@ -265,10 +288,20 @@ export class ProductComponent implements OnInit {
         },
         scales: {
           x: {
+            type: 'linear',
+            position: 'bottom',
             title: { display: false },
+            min: minDate,
+            max: maxDate,
             ticks: {
               color: '#222',
-              callback: (v: any, idx: number) => displayLabels[idx]
+              stepSize: 7776000000, // ~3 months in milliseconds
+              callback: (value: any) => {
+                const d = new Date(value);
+                const q = Math.floor(d.getMonth() / 3) + 1;
+                const y = d.getFullYear();
+                return `Q${q} ${y}`;
+              }
             }
           },
           y: {
@@ -282,10 +315,30 @@ export class ProductComponent implements OnInit {
           mode: 'nearest',
           intersect: false
         },
-        responsive: true,
+        responsive: false,
         maintainAspectRatio: false
       },
-      plugins: [lastValueLabelPlugin]
+      plugins: [{
+        id: 'lastValueLabel',
+        afterDatasetsDraw: (chart: any) => {
+          const ctx = chart.ctx;
+          const xScale = chart.scales.x;
+          const yScale = chart.scales.y;
+          const maxX = Math.max(...chartData.map(d => d.x));
+          const lastDataPoint = chartData.find(d => d.x === maxX);
+          
+          if (!lastDataPoint) return;
+          
+          const xPixel = xScale.getPixelForValue(lastDataPoint.x);
+          const yPixel = yScale.getPixelForValue(lastDataPoint.y);
+          
+          ctx.font = 'bold 20px Arial';
+          ctx.fillStyle = '#1976d2';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'bottom';
+          ctx.fillText(`$${lastDataPoint.y.toFixed(2)}`, xPixel, yPixel - 15);
+        }
+      }]
     });
   }
 }
