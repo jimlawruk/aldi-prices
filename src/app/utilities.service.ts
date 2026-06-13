@@ -6,9 +6,21 @@ import { Injectable } from '@angular/core';
 export class UtilitiesService {
   // Product name aliases - map canonical names to arrays of aliases
   productAliases: { [key: string]: string[] } = {
-    'Whole Milk Gallon': ['Whole Milks', 'While Milk', 'Milk Gallon'],
-    'Toaster Tarts': ['Toater Tarts']
-    // Add more aliases here as needed
+    '2% Milk Gallon': ['2% Gallon Milk'],
+    'Bananas lb': ['Bananas'],
+    'Black Beans': ['Balck Beans'],
+    'Cheddar Cheese': ['Mild Cheddar Cheese'],
+    'Greek Plain Yogurt': ['Greek Yogurt'],
+    'Mixed Nuts': ['Mixed Nuts 14.75', 'Mixed Nuts 14.75 oz', 'Raw Mixed Nuts'],
+    'Multi Peppers 3pk': ['Multi-Peppers 3 pk', 'Multi Peppers'],
+    'Potatoes 10lb': ['Pototoes 10 lb'],
+    'Pure Olive Oil': ['Pure Olive Oil 16.9 oz'],
+    'Raspberries': ['Rasberries'],
+    'Spread Butter': ['Spead Butter'],
+    'Thin Wheat Crackers': ['Thin Wheat Cracker'],
+    'Toaster Tarts': ['Toater Tarts'],
+    'Tuna': ['Chunk Tuna'],
+    'Whole Milk Gallon': ['Whole Milk', 'Whole Milks', 'While Milk', 'Milk Gallon'],
   };
 
   productToSlug(product: string): string {
