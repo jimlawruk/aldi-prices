@@ -44,7 +44,7 @@ IMG_4732,11/16/2022,Flat Leaf Spinach,1.79
 IMG_4732,11/16/2022,Blackberries,1.59
 IMG_4732,12/13/2022,Large Eggs,4.08
 IMG_4732,12/13/2022,Ice Cream,2.48
-IMG_4732,12/13/2022,Russet Potatoes 10 lb,4.99
+IMG_4732,12/13/2022,Potatoes 10 lb,4.99
 IMG_4732,12/13/2022,Almonds,5.19
 IMG_4732,12/13/2022,Chopped Walnuts,2.99
 IMG_4732,12/13/2022,Celery,1.39
@@ -94,7 +94,7 @@ IMG_6411.jpg,3/17/2023,Large Eggs,2.11
 IMG_6411.jpg,3/17/2023,Frozen Blueberries,4.39
 IMG_6411.jpg,3/17/2023,Multi Peppers,2.69
 IMG_6411.jpg,3/26/2023,Balck Beans,0.77
-IMG_6411.jpg,3/26/2023,Russet Potatoes 10 lb,5.89
+IMG_6411.jpg,3/26/2023,Potatoes 10 lb,5.89
 IMG_6411.jpg,3/26/2023,Big Dipper Chips,1.98
 IMG_6411.jpg,3/26/2023,Thin Pizza,2.99
 IMG_6411.jpg,3/26/2023,Flat Leaf Spinach,1.49
@@ -107,7 +107,7 @@ IMG_6411.jpg,3/26/2023,Blackberries,1.99
 IMG_6412,5/13/2023,Granny Smith Apples,4.49
 IMG_6412,5/13/2023,Greek Plain Yogurt,3.49
 IMG_6412,5/13/2023,Frozen Blueberries,4.39
-IMG_6412,5/13/2023,Roasted Almonds,5.99
+IMG_6412,5/13/2023,Almonds,5.99
 IMG_6412,5/13/2023,Flat Leaf Spinach,1.49
 IMG_6412,5/13/2023,Black Beans,0.77
 IMG_6412,5/13/2023,Big Dipper Chips,1.98
@@ -140,7 +140,7 @@ IMG_6412,9/23/2023,Greek Plain Yogurt,3.49
 IMG_6412,9/23/2023,Bran Flakes,2.59
 IMG_6412,9/23/2023,Flat Leaf Spinach,1.49
 IMG_6412,9/23/2023,2% Milk Half Gallon,2.06
-IMG_6412,9/23/2023,Potatoes 5lb,4.29
+IMG_6412,9/23/2023,Potatoes 5 lb,4.29
 IMG_6412,9/23/2023,Big Dipper Chips,1.98
 IMG_6412,9/23/2023,Hot Sauce,2.09
 IMG_6412,9/23/2023,Granny Smith Apples,4.99
@@ -221,7 +221,7 @@ IMG_7358,12/29/2023,Tuna,0.85
 IMG_7358,12/29/2023,Sardines,0.95
 IMG_7358,12/29/2023,Greek Plain Yogurt,3.49
 IMG_7358,12/29/2023,Granny Smith Apples,3.99
-IMG_7358,12/29/2023,Russet Potatoes 10 lb,3.99
+IMG_7358,12/29/2023,Potatoes 10 lb,3.99
 IMG_7358,12/29/2023,Big Dipper Chips,2.19
 IMG_7358,12/29/2023,Cheddar Cheese,2.99
 IMG_7358,12/29/2023,Large Eggs,1.72
@@ -334,7 +334,7 @@ IMG_8669.jpg,2/27/2025,Whole Milk Gallon,4.62
 IMG_8669.jpg,2/27/2025,Flat Leaf Spinach,1.55
 IMG_8669.jpg,2/27/2025,Tuna,0.85
 IMG_8669.jpg,2/27/2025,Half and Half,2.17
-IMG_8669.jpg,2/27/2025,Russet Potatoes,4.39
+IMG_8669.jpg,2/27/2025,Potatoes 10 lb,4.39
 IMG_8669.jpg,2/27/2025,Black Beans,0.85
 IMG_8669.jpg,2/27/2025,Greek Plain Yogurt,3.75
 IMG_8669.jpg,2/27/2025,Big Dipper Chips,1.95
@@ -389,8 +389,8 @@ TODO,7/15/2025,Cheddar Cheese,3.59
 TODO,7/16/2025,Bananas lb,0.52
 TODO,7/17/2025,Granny Smith Apples,4.19
 TODO,7/18/2025,Pretzel Sticks,1.99
-TODO,7/19/2025,Eggs,2.71
-,,,
+TODO,7/19/2025,Large Eggs,2.71
+,, ,
 TODO,8/7/2025,Protein Energy Bars,4.69
 TODO,8/7/2025,Ground Coffee,6.49
 TODO,8/7/2025,Strawberries,2.35
@@ -429,7 +429,7 @@ TODO,5/20/2025,Chopped Walnuts,2.89
 TODO,9/20/2025,Ice Cream,2.95
 TODO,9/20/2025,Cheese Crackers,3.79
 TODO,9/20/2025,Bananas lb,0.53
-TODO,9/20/2025,Half Gallon Milk 2%,2.27
+TODO,9/20/2025,2% Milk Half Gallon,2.27
 TODO,9/20/2025,Frozen Blueberries,3.99
 TODO,9/20/2025,Ground Coffee,6.49
 TODO,9/20/2025,Pretzel Sticks,1.99
@@ -467,7 +467,7 @@ TODO,10/12/2025,Romaine Hearts,2.99
 TODO,10/12/2025,Creamy Peanut Butter,1.99
 TODO,10/12/2025,Trail Mix,4.89
 TODO,10/12/2025,Almonds,5.95
-TODO,10/12/2025,Wheat Thin Crackers,2.69
+TODO,10/12/2025,Thin Wheat Crackers,2.69
 TODO,10/12/2025,Big Dipper Chips,1.89
 TODO,10/12/2025,Bananas lb,0.53
 TODO,10/12/2025,Sardines,0.99
@@ -504,23 +504,204 @@ TODO,10/26/2025,Walnuts,5.89
 TODO,10/26/2025,Blackberries,1.79
 TODO,10/26/2025,Pure Olive Oil,5.65
 TODO,10/26/2025,Cheese Crackers,3.79
-TODO,10/26/2025,Thin Wheat Cracker,2.99
+TODO,10/26/2025,Thin Wheat Crackers,2.99
 TODO,10/26/2025,Flat Leaf Spinach,1.79
 TODO,10/26/2025,Protein Energy Bar,4.69
 TODO,10/26/2025,Bananas lb,0.53
 TODO,10/26/2025,Raisin Bran,2.19
 TODO,10/26/2025,Chewy Granola Bars,2.85
 ,,,
-TODO,12/8/2025,Ice Cream,2.95
-TODO,12/8/2025,Protein Energy Bar,4.69
-TODO,12/8/2025,Toater Tarts,2.18
-TODO,12/8/2025,Raisin Bran,2.15
-TODO,12/8/2025,Ground Coffee,6.69
-TODO,12/8/2025,Black Beans,0.79
-TODO,12/8/2025,2% Gallon Milk,4.34
-TODO,12/8/2025,Spread Butter,3.385
-TODO,12/8/2025,Hot Sauce,1.89
-TODO,12/8/2025,Rasberries,2.49
-TODO,12/8/2025,Half & Half,2.65
-TODO,12/8/2025,Multi-Peppers,2.39
-TODO,12/8/2025,Tuna,0.95
+TODO,11/25/2025,Cinnamon Bagels,1.99
+TODO,11/26/2025,Ground Coffee,6.69
+TODO,11/27/2025,Maxx Bar,4.79
+TODO,11/28/2025,Big Dipper Chips,1.95
+TODO,11/29/2025,Pure Olive Oil,5.65
+TODO,11/30/2025,Bananas lb,0.52
+TODO,12/1/2025,Cheese Crackers,3.79
+TODO,12/2/2025,Chopped Walnuts,2.79
+TODO,12/3/2025,Mixed Nuts,5.29
+,,,
+IM 1-10-2026,12/8/2025,Ice Cream,2.95
+IM 1-10-2026,12/8/2025,Protein Energy Bar,4.69
+IM 1-10-2026,12/8/2025,Toater Tarts,2.18
+IM 1-10-2026,12/8/2025,Raisin Bran,2.15
+IM 1-10-2026,12/8/2025,Ground Coffee,6.69
+IM 1-10-2026,12/8/2025,Black Beans,0.79
+IM 1-10-2026,12/8/2025,2% Gallon Milk,4.34
+IM 1-10-2026,12/8/2025,Spread Butter,3.385
+IM 1-10-2026,12/8/2025,Hot Sauce,1.89
+IM 1-10-2026,12/8/2025,Rasberries,2.49
+IM 1-10-2026,12/8/2025,Half and Half,2.65
+IM 1-10-2026,12/8/2025,Multi Peppers,2.39
+IM 1-10-2026,12/8/2025,Tuna,0.95
+,,,
+IM 1-10-2026,12/23/2025,Ice Cream,2.95
+IM 1-10-2026,12/23/2025,Ground Coffee,6.69
+IM 1-10-2026,12/23/2025,Extra Virgin Olive Oil,5.99
+IM 1-10-2026,12/23/2025,Whole Milk Gallon,4.53
+IM 1-10-2026,12/23/2025,Half and Half,2.65
+IM 1-10-2026,12/23/2025,Maxx Bar,4.79
+IM 1-10-2026,12/23/2025,Frozen Blueberries,3.99
+IM 1-10-2026,12/23/2025,Protein Energy Bar,4.69
+IM 1-10-2026,12/23/2025,Cheddar Cheese,3.29
+IM 1-10-2026,12/23/2025,Large Eggs,1.96
+IM 1-10-2026,12/23/2025,Baby Carrots,0.89
+IM 1-10-2026,12/23/2025,Greek Yogurt,3.69
+IM 1-10-2026,12/23/2025,Romaine Hearts,2.99
+IM 1-10-2026,12/23/2025,Toaster Tarts,2.18
+IM 1-10-2026,12/23/2025,Chopped Walnuts,2.79
+IM 1-10-2026,12/23/2025,Walnuts,5.89
+IM 1-10-2026,12/23/2025,Raw Mixed Nuts,4.19
+,,,
+IM 1-10-2026,1/6/2026,Big Dipper Chips,1.95
+IM 1-10-2026,1/6/2026,Bran Flakes,2.85
+IM 1-10-2026,1/6/2026,Frozen Blueberries,3.99
+IM 1-10-2026,1/6/2026,Black Beans,0.79
+IM 1-10-2026,1/6/2026,Extra Virgin Olive Oil,5.99
+IM 1-10-2026,1/6/2026,Pure Olive Oil,5.65
+IM 1-10-2026,1/6/2026,Sardines,0.99
+IM 1-10-2026,1/6/2026,Raisin Bran,2.15
+IM 1-10-2026,1/6/2026,Granny Smith Apples,3.69
+IM 1-10-2026,1/6/2026,Romaine Hearts,2.99
+,,,
+TODO,1/12/2026,Large Eggs,1.96
+TODO,1/12/2026,Celery,1.25
+TODO,1/12/2026,Blackberries,2.29
+TODO,1/12/2026,Big Dipper Chips,1.95
+TODO,1/12/2026,Flat Leaf Spinach,1.49
+TODO,1/12/2026,Ice Cream,2.95
+TODO,1/12/2026,Russet Potato,3.69
+TODO,1/12/2026,Black Beans,0.79
+TODO,1/12/2026,Ground Coffee,6.69
+TODO,1/12/2026,Whole Milk Gallon,4.37
+TODO,1/12/2026,Toaster Tarts,2.18
+TODO,1/12/2026,Baby Carrots,0.99
+TODO,1/12/2026,Half and Half,2.65
+TODO,1/12/2026,Greek Plain Yogurt,3.69
+TODO,1/12/2026,Bananas lb,0.49
+TODO,1/12/2026,Multi Peppers,2.39
+TODO,1/12/2026,Raspberries,2.69
+,,,
+TODO,1/29/2026,Frozen Blueberries,3.79
+TODO,1/29/2026,Greek Plain Yogurt,3.49
+TODO,1/29/2026,Cheese Crackers,3.79
+TODO,1/29/2026,Ground Coffee,6.49
+TODO,1/29/2026,Whole Milk Gallon,4.37
+TODO,1/29/2026,Trail Mix,4.89
+TODO,1/29/2026,Mandarins,2.69
+TODO,1/29/2026,Cheddar Cheese,3.29
+TODO,1/29/2026,Protein Energy Bar,4.69
+TODO,1/29/2026,Big Dipper Chips,1.95
+TODO,1/29/2026,Granny Smith Apples,3.49
+TODO,1/29/2026,Mixed Nuts 14.75 oz,5.29
+TODO,1/29/2026,Bananas lb,0.49
+,,,
+TODO,2/26/2026,Protein Energy Bar,4.99
+TODO,2/26/2026,Flour Tortillas,1.95
+TODO,2/26/2026,Mild Cheddar Cheese,3.29
+TODO,2/26/2026,Mixed Nuts,5.29
+TODO,2/26/2026,Pineapple,1.95
+,,,
+,,,
+,,,
+TODO,3/8/2026,Raisin Bran,2.15
+TODO,3/8/2026,Black Beans,0.85
+TODO,3/8/2026,Baby Carrots,0.99
+TODO,3/8/2026,Multi Peppers,2.19
+TODO,3/8/2026,Blackberries,1.69
+TODO,3/8/2026,Toaster Tarts,2.18
+,,,
+TODO,3/21/2026,Wild Caught Salmon,7.65
+TODO,3/21/2026,Broccoli Florets,1.15
+TODO,3/21/2026,Frozen Blueberries,3.79
+TODO,3/21/2026,Whole Milk Gallon,4.33
+TODO,3/21/2026,Ice Cream,2.95
+TODO,3/21/2026,Bran Flakes,2.85
+TODO,3/21/2026,Raisin Bran,2.15
+TODO,3/21/2026,Black Beans,0.85
+TODO,3/21/2026,Mixed Nuts 14.75,5.29
+TODO,3/21/2026,Grass Fed Ground Beef,5.99
+TODO,3/21/2026,Maxx Bar,4.99
+TODO,3/21/2026,Russet Potato,3.99
+TODO,3/21/2026,Chunk Tuna,0.95
+TODO,3/21/2026,Half and Half,2.49
+TODO,3/21/2026,Toaster Tarts,2.18
+TODO,3/21/2026,Cheddar Cheese,3.29
+TODO,3/21/2026,Ground Coffee,6.49
+TODO,3/21/2026,Granny Smith Apples,3.49
+TODO,3/21/2026,Greek Plain Yogurt,3.49
+TODO,3/21/2026,Bananas,0.49
+,,,
+TODO,3/28/2026,Raisin Bran,2.15
+TODO,3/28/2026,Ground Coffee,6.19
+TODO,3/28/2026,Large Eggs,1.66
+TODO,3/28/2026,Ice Cream,2.95
+TODO,3/28/2026,Avocado,0.49
+TODO,3/28/2026,Black Beans,0.85
+TODO,3/28/2026,Cheddar Cheese,3.29
+TODO,3/28/2026,Granny Smith Apples,3.49
+TODO,3/28/2026,Half and Half,2.49
+TODO,3/28/2026,Whole Milk Gallon,4.33
+TODO,3/28/2026,Bananas,0.49
+TODO,3/28/2026,Romaine Hearts,2.99
+TODO,3/28/2026,Mandarins,3.19
+TODO,3/28/2026,Cinnamon Bagels,1.99
+TODO,3/28/2026,Mild Salsa,2.49
+TODO,3/28/2026,Protein Energy Bar,4.99
+,,,
+TODO,4/7/2026,Cinnamon Bagels,1.99
+TODO,4/7/2026,Blackberries,1.49
+TODO,4/7/2026,Black Beans,0.85
+TODO,4/7/2026,Mild Salsa,2.49
+TODO,4/7/2026,Ice Cream,2.95
+TODO,4/7/2026,Grass Fed Ground Beef,5.99
+TODO,4/7/2026,Big Dipper Chips,1.95
+TODO,4/7/2026,Chunk Tuna,0.95
+TODO,4/7/2026,Avocado,0.49
+TODO,4/7/2026,Bananas,0.49
+TODO,4/7/2026,Frozen Blueberries,3.79
+TODO,4/7/2026,Large Eggs,1.66
+TODO,4/7/2026,Raisin Bran,2.15
+TODO,4/7/2026,Whole Milk Gallon,4.59
+,,,
+TODO,4/23/2026,Greek Plain Yogurt,3.49
+TODO,4/23/2026,Granny Smith Apples,3.49
+TODO,4/23/2026,Big Dipper Chips,1.95
+TODO,4/23/2026,Tuna,0.95
+TODO,4/23/2026,Black Beans,0.85
+TODO,4/23/2026,Avocado Oil,7.49
+TODO,4/23/2026,Pure Olive Oil,5.65
+TODO,4/23/2026,Hot Sauce,1.89
+TODO,4/23/2026,Maxx Bar,4.99
+,,,
+TODO,6/2/2026,Cinnamon Bagels,1.99
+TODO,6/2/2026,Cheddar Cheese,3.29
+TODO,6/2/2026,Tuna,0.95
+TODO,6/2/2026,Granny Smith Apples,3.49
+TODO,6/2/2026,Bananas,0.48
+,,,
+TODO,6/8/2026,Bran Flakes,2.85
+TODO,6/8/2026,Half and Half,2.49
+TODO,6/8/2026,Ground Coffee,6.19
+TODO,6/8/2026,Frozen Blueberries,3.79
+TODO,6/8/2026,Raisin Bran,2.39
+TODO,6/8/2026,Whole Milk,5.02
+TODO,6/8/2026,Protein Energy Bar,4.99
+TODO,6/8/2026,Ice Cream,2.95
+TODO,6/8/2026,Cinnamon Bagels,1.99
+TODO,6/8/2026,Greek Plain Yogurt,3.49
+TODO,6/8/2026,Heavy Whip Cream,4.69
+TODO,6/8/2026,Pure Olive Oil,5.65
+TODO,6/8/2026,Hamburger Buns,1.39
+TODO,6/8/2026,Walnuts,5.89
+TODO,6/8/2026,Chopped Walnuts,2.79
+TODO,6/8/2026,Celery,1.89
+TODO,6/8/2026,Dark Choc Morsels,3.65
+TODO,6/8/2026,Deli Sliced Provol,1.49
+TODO,6/8/2026,Big Dipper Chips,1.95
+TODO,6/8/2026,Cheese Crackers,3.79
+TODO,6/8/2026,Mild Cheddar Shred,3.29
+TODO,6/8/2026,Flat Leaf Spinach,1.89
+TODO,6/8/2026,Multi-Peppers 3 pk,2.55
+TODO,6/8/2026,Fajita Tortilla 20 ct,1.85
+TODO,6/8/2026,Thin Wheat Cracker,2.99
