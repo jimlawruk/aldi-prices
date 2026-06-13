@@ -59,9 +59,18 @@
 
 <div *ngIf="activeView === 'products'">
   <p class="description-text">
-    <span *ngIf="!showAllProducts">This table displays the products with at least {{ minPricesThreshold }} prices collected.</span>
-    <span *ngIf="showAllProducts">This table is displaying all the products with a price collected.</span>
+    <span *ngIf="!filterText && !showAllProducts">This table displays the products with at least {{ minPricesThreshold }} prices collected.</span>
+    <span *ngIf="!filterText && showAllProducts">This table is displaying all the products with a price collected.</span>
+    <span *ngIf="filterText">Showing all products matching "{{ filterText }}".</span>
   </p>
+  <div class="filter-container">
+    <input
+      type="text"
+      class="product-filter-input"
+      placeholder="Filter products..."
+      [(ngModel)]="filterText"
+    />
+  </div>
   <table class="compact-table">
     <thead>
       <tr>

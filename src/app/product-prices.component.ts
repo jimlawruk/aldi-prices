@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { UtilitiesService } from './utilities.service';
 import { loadChartJs } from './chartjs-loader';
 import { lastValueLabelPlugin } from './last-value-label.plugin';
@@ -19,7 +20,7 @@ interface ProductStats {
 @Component({
   selector: 'app-product-prices',
   standalone: true,
-  imports: [NgFor, NgIf, RouterModule],
+  imports: [NgFor, NgIf, FormsModule, RouterModule],
   templateUrl: './product-prices.component.html',
   styleUrls: ['./product-prices.component.css']
 })
@@ -30,6 +31,7 @@ export class ProductPricesComponent implements OnInit {
   minPricesThreshold = 6; // Minimum number of prices required to display a product
   sortColumn: keyof ProductStats = 'pricesCollected';
   sortDirection: 'asc' | 'desc' = 'desc';
+  filterText = '';
   basketChart: any = null;
   basketChartData: { quarters: string[], sums: number[] } = { quarters: [], sums: [] };
   basketTableData: { quarters: string[], products: { name: string, prices: (number|null)[], estimates: boolean[] }[], totals: number[] } = 
@@ -41,14 +43,17 @@ export class ProductPricesComponent implements OnInit {
   setActiveView(view: 'basket' | 'products') {
     this.activeView = view;
     if (view === 'basket') {
+      this.router.navigate(['/']);
       setTimeout(() => this.renderBasketChart(), 0);
+    } else {
+      this.router.navigate(['/product-prices']);
     }
   }
 
-  constructor(private utilities: UtilitiesService) {}
+  constructor(private utilities: UtilitiesService, private router: Router) {}
 
   async ngOnInit() {
-    this.activeView = 'basket'; // Always default to basket view on reload
+    this.activeView = this.router.url.startsWith('/product-prices') ? 'products' : 'basket';
     await this.utilities.initializeBasketOfGoods();
     const response = await fetch('prices.csv');
     const csvText = await response.text();
@@ -61,6 +66,22 @@ export class ProductPricesComponent implements OnInit {
   }
 
   get filteredStats() {
+    const query = this.filterText.trim().toLowerCase();
+    if (query) {
+      return [...this.stats]
+        .filter(s => s.Product.toLowerCase().includes(query))
+        .sort((a, b) => {
+          let aValue: any = a[this.sortColumn];
+          let bValue: any = b[this.sortColumn];
+          if (['pricesCollected', 'firstPrice', 'latestPrice', 'annualizedIncrease', 'averagePrice'].includes(this.sortColumn)) {
+            aValue = Number(typeof aValue === 'string' ? aValue.replace(/[$,% ]/g, '') : aValue) || 0;
+            bValue = Number(typeof bValue === 'string' ? bValue.replace(/[$,% ]/g, '') : bValue) || 0;
+          }
+          if (aValue < bValue) return this.sortDirection === 'asc' ? -1 : 1;
+          if (aValue > bValue) return this.sortDirection === 'asc' ? 1 : -1;
+          return 0;
+        });
+    }
     if (this.showAllProducts) {
       return [...this.stats]
         .sort((a, b) => {
