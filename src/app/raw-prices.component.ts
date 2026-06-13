@@ -46,7 +46,9 @@ export class RawPricesComponent implements OnInit {
       if (Price && !isNaN(Number(Price))) {
         formattedPrice = Number(Price).toFixed(2);
       }
-      return { Filename, Date, Product, Price: formattedPrice };
+      // Apply product alias if it exists
+      const aliasedProduct = this.utilities.applyProductAlias(Product);
+      return { Filename, Date, Product: aliasedProduct, Price: formattedPrice };
     }).filter(row => row.Filename && row.Date && row.Product && row.Price);
   }
 

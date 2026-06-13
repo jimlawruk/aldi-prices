@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { loadChartJs } from './chartjs-loader';
 import { lastValueLabelPlugin } from './last-value-label.plugin';
 import { NgIf, NgFor } from '@angular/common';
+import { UtilitiesService } from './utilities.service';
 
 interface ProductRow {
   Date: string;
@@ -22,7 +23,7 @@ export class ProductComponent implements OnInit {
   productName = '';
   rows: ProductRow[] = [];
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private utilities: UtilitiesService) {}
 
   async ngOnInit() {
     this.route.paramMap.subscribe(async params => {
@@ -87,8 +88,11 @@ export class ProductComponent implements OnInit {
     const actualRows = rows.map(row => {
       const parts = row.split(',');
       const Date = parts[1];
-      const Product = parts[2];
+      let Product = parts[2];
       const Price = parts[3];
+      // Apply product alias if it exists
+      const aliasedProduct = this.utilities.applyProductAlias(Product);     
+      Product = aliasedProduct;
       let formattedPrice = Price;
       if (Price && !isNaN(Number(Price))) {
         formattedPrice = Number(Price).toFixed(2);
